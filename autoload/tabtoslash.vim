@@ -28,7 +28,7 @@ function! s:setup(dlm) abort
 	let l:d = escape(a:dlm, '^$&.*/\~[]')
 	let s:escPat = '\\[\\' . l:d . ']'
 	" Some symbols need to be enclosed in [].
-	let s:forwardPat = '[^'. l:d . ']*[' . l:d . ']'
+	let s:forwardPat = '[^' . l:d . ']*[' . l:d . ']'
 	let s:backPat = exists('g:tabtoslash_back_to_head') ? '[^D]*[D][^D]*$' : '[D][^D]*$'
 	let s:backPat = substitute(s:backPat , 'D', l:d, 'g')
 	cnoremap <script> <expr> <Tab> <SID>forward()
@@ -44,7 +44,7 @@ function! tabtoslash#unmap() abort
 endfunction
 
 function! tabtoslash#setup() abort
-	let l:m = matchlist(getcmdline(), '^\S*s\(ubstitute\)\?\([!?#$%&@,.;:~_=*/+\-`''<>(){}\[\]]\).*\1')
+	let l:m = matchlist(getcmdline(), '^\S*s\(ubstitute\)\?\([!#-/:-@^_`~{}\[\]]\).*\1')
 	if len(l:m)
 		if s:dlm != l:m[2]
 			call s:setup(l:m[2])
