@@ -24,8 +24,10 @@ function! s:setup(dlm) abort
   let s:escPat = '\\[\\' . l:d . ']'
   " Some symbols need to be enclosed in [].
   let s:forwardPat = '[^' . l:d . ']*[' . l:d . ']'
-  let s:backPat = exists('g:tabtoslash_back_to_head') ? '[^D]*[D][^D]*$' : '[D][^D]*$'
-  let s:backPat = substitute(s:backPat , 'D', l:d, 'g')
+  let s:backPat = '[' . l:d . '][^' . l:d . ']*$'
+  if exists('g:tabtoslash_back_to_head')
+    let s:backPat = '[^' . l:d . ']*' . s:backPat
+  endif
   cnoremap <script> <expr> <Tab> <SID>forward()
   cnoremap <script> <expr> <S-Tab> <SID>back()
   execute 'cnoremap <script> <expr> ' . s:dlm . ' <SID>skip()'
