@@ -1,7 +1,8 @@
 let s:dlm = ''
 
+" get cmdline widhout escaped delmiters.
 function! s:cl() abort
-  return substitute(getcmdline(), s:escPat, '__', 'g')
+  return substitute(getcmdline(), s:escPat, '  ', 'g')
 endfunction
 
 function! s:forward() abort
@@ -13,13 +14,7 @@ function! s:back() abort
 endfunction
 
 function! s:skip() abort
-  let c = s:cl()
-  let p = getcmdpos()
-  if matchstr(c, '.', p - 1) == s:dlm && matchstr(c, '.', p - 2) != '\\'
-    return "\<Right>"
-  else
-    return s:dlm
-  endif
+  return matchstr(s:cl(), '.', getcmdpos() - 1) == s:dlm ? "\<Right>" : s:dlm
 endfunction
 
 function! s:setup(dlm) abort
