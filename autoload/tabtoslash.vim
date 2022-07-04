@@ -11,10 +11,10 @@ endf
 fu! s:Fd() abort
 return matchstr(s:Fa(), '.', getcmdpos() - 1) == s:a ? "\<Right>" : s:a
 endf
-fu! s:Fe(a) abort
+fu! s:Fe(b) abort
 exe 'silent! cunmap <script> ' . s:a
-let s:a = a:a
-let l:d = escape(a:a, '^$<ESCMARK:0>.*/\~[]')
+let s:a = a:b
+let l:d = escape(a:b, '^$<ESCMARK:0>.*/\~[]')
 let s:b = '\\[\\' . l:d . ']'
 let s:c = '[^' . l:d . ']*[' . l:d . ']'
 let s:d = '[' . l:d . '][^' . l:d . ']*$'
