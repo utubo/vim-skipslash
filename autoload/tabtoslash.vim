@@ -14,7 +14,7 @@ endf
 fu! s:Fe(b) abort
 exe 'silent! cunmap <script> ' . s:a
 let s:a = a:b
-let l:d = escape(a:b, '^$<ESCMARK:0>.*/\~[]')
+let l:d = escape(a:b, '^$&.*/\~[]')
 let s:b = '\\[\\' . l:d . ']'
 let s:c = '[^' . l:d . ']*[' . l:d . ']'
 let s:d = '[' . l:d . '][^' . l:d . ']*$'
