@@ -23,7 +23,7 @@ let s:d = '[^' . l:d . ']*' . s:d
 endif
 cno <script> <expr> <Tab> <SID>Fb()
 cno <script> <expr> <S-Tab> <SID>Fc()
-exe 'cnoremap <script> <expr> ' . s:a . ' <SID>skip()'
+exe 'cnoremap <script> <expr> ' . s:a . ' <SID>Fd()'
 endf
 fu! tabtoslash#unmap() abort
 silent! cunmap <script> <Tab>
