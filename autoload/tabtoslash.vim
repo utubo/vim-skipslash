@@ -1,53 +1,43 @@
-let s:dlm = ''
-
-" get cmdline widhout escaped delmiters.
-function! s:cl() abort
-  return substitute(getcmdline(), s:escPat, '  ', 'g')
-endfunction
-
-function! s:forward() abort
-  return repeat("\<Right>", strchars(matchstr(s:cl(), s:forwardPat, getcmdpos() - 1)))
-endfunction
-
-function! s:back() abort
-  return repeat("\<Left>", strchars(matchstr(strpart(s:cl(), 0, getcmdpos() - 1), s:backPat)))
-endfunction
-
-function! s:skip() abort
-  return matchstr(s:cl(), '.', getcmdpos() - 1) == s:dlm ? "\<Right>" : s:dlm
-endfunction
-
-function! s:setup(dlm) abort
-  execute 'silent! cunmap <script> ' . s:dlm
-  let s:dlm = a:dlm
-  let l:d = escape(a:dlm, '^$&.*/\~[]')
-  let s:escPat = '\\[\\' . l:d . ']'
-  " Some symbols need to be enclosed in [].
-  let s:forwardPat = '[^' . l:d . ']*[' . l:d . ']'
-  let s:backPat = '[' . l:d . '][^' . l:d . ']*$'
-  if exists('g:tabtoslash_back_to_head')
-    let s:backPat = '[^' . l:d . ']*' . s:backPat
-  endif
-  cnoremap <script> <expr> <Tab> <SID>forward()
-  cnoremap <script> <expr> <S-Tab> <SID>back()
-  execute 'cnoremap <script> <expr> ' . s:dlm . ' <SID>skip()'
-endfunction
-
-function! tabtoslash#unmap() abort
-  silent! cunmap <script> <Tab>
-  silent! cunmap <script> <S-Tab>
-  execute 'silent! cunmap <script> ' . s:dlm
-  let s:dlm = ''
-endfunction
-
-function! tabtoslash#setup() abort
-  let l:m = matchlist(getcmdline(), '^\S*\(s\|substitute\)\([!#-/:-@^_`~{}\[\]]\).*\2')
-  if len(l:m)
-    if s:dlm != l:m[2]
-      call s:setup(l:m[2])
-    endif
-  elseif s:dlm != ''
-    call tabtoslash#unmap()
-  endif
-endfunction
-
+let s:b = ''
+fu! s:Fb() abort
+return substitute(getcmdline(), s:c, '  ', 'g')
+endf
+fu! s:Fc() abort
+return repeat("\<Right>", strchars(matchstr(s:Fb(), s:d, getcmdpos() - 1)))
+endf
+fu! s:Fd() abort
+return repeat("\<Left>", strchars(matchstr(strpart(s:Fb(), 0, getcmdpos() - 1), s:e)))
+endf
+fu! s:Fe() abort
+return matchstr(s:Fb(), '.', getcmdpos() - 1) == s:b ? "\<Right>" : s:b
+endf
+fu! s:Ff(b) abort
+exe 'silent! cunmap <script> ' . s:b
+let s:b = a:b
+let l:d = escape(a:b, '^$<ESCMARK:0>.*/\~[]')
+let s:c = '\\[\\' . l:d . ']'
+let s:d = '[^' . l:d . ']*[' . l:d . ']'
+let s:e = '[' . l:d . '][^' . l:d . ']*$'
+if exists('g:tabtoslash_back_to_head')
+let s:e = '[^' . l:d . ']*' . s:e
+endif
+cno <script> <expr> <Tab> <SID>Fc()
+cno <script> <expr> <S-Tab> <SID>Fd()
+exe 'cnoremap <script> <expr> ' . s:b . ' <SID>skip()'
+endf
+fu! tabtoslash#unmap() abort
+silent! cunmap <script> <Tab>
+silent! cunmap <script> <S-Tab>
+exe 'silent! cunmap <script> ' . s:b
+let s:b = ''
+endf
+fu! tabtoslash#setup() abort
+let l:m = matchlist(getcmdline(), '^\S*\(s\|substitute\)\([!#-/:-@^_`~{}\[\]]\).*\2')
+if len(l:m)
+if s:b != l:m[2]
+call s:Ff(l:m[2])
+endif
+elseif s:b != ''
+call tabtoslash#unmap()
+endif
+endf
