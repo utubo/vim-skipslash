@@ -26,8 +26,8 @@ cno <script> <expr> <S-Tab> <SID>C()
 exe 'cnoremap <script> <expr> ' . s:a . ' <SID>D()'
 endf
 fu! tabtoslash#unmap() abort
-sil! cunmap <script> <Tab>
-sil! cunmap <script> <S-Tab>
+sil! cu <script> <Tab>
+sil! cu <script> <S-Tab>
 exe 'silent! cunmap <script> ' . s:a
 let s:a = ''
 endf
