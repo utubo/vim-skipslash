@@ -12,7 +12,7 @@ fu! s:D() abort
 return matchstr(s:A(),'.',getcmdpos()-1)==s:a ? "\<Right>" : s:a
 endf
 fu! s:E(b) abort
-exe 'silent! cunmap <script> '.s:a
+exe 'silent! cunmap <script>' s:a
 let s:a=a:b
 let l:d=escape(a:b,'^$&.*/\~[]')
 let s:b='\\[\\'.l:d.']'
@@ -23,12 +23,12 @@ let s:d='[^'.l:d.']*'.s:d
 endif
 cno <script> <expr> <Tab> <SID>B()
 cno <script> <expr> <S-Tab> <SID>C()
-exe 'cnoremap <script> <expr> '.s:a.' <SID>D()'
+exe 'cnoremap <script> <expr>' s:a '<SID>D()'
 endf
 fu! tabtoslash#unmap() abort
 sil! cu <script> <Tab>
 sil! cu <script> <S-Tab>
-exe 'silent! cunmap <script> '.s:a
+exe 'silent! cunmap <script>' s:a
 let s:a=''
 endf
 fu! tabtoslash#setup() abort

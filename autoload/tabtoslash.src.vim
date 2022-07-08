@@ -18,7 +18,7 @@ function! s:skip() abort
 endfunction
 
 function! s:setup(dlm) abort
-  execute 'silent! cunmap <script> ' . s:dlm
+  execute 'silent! cunmap <script>' s:dlm
   let s:dlm = a:dlm
   let l:d = escape(a:dlm, '^$&.*/\~[]')
   let s:escPat = '\\[\\' . l:d . ']'
@@ -30,13 +30,13 @@ function! s:setup(dlm) abort
   endif
   cnoremap <script> <expr> <Tab> <SID>forward()
   cnoremap <script> <expr> <S-Tab> <SID>back()
-  execute 'cnoremap <script> <expr> ' . s:dlm . ' <SID>skip()'
+  execute 'cnoremap <script> <expr>' s:dlm '<SID>skip()'
 endfunction
 
 function! tabtoslash#unmap() abort
   silent! cunmap <script> <Tab>
   silent! cunmap <script> <S-Tab>
-  execute 'silent! cunmap <script> ' . s:dlm
+  execute 'silent! cunmap <script>' s:dlm
   let s:dlm = ''
 endfunction
 
