@@ -23,7 +23,7 @@ def Skip(): string
 enddef
 
 def SetupImpl(newDlm: string)
-  execute 'silent! cunmap <script> ' .. dlm
+  execute 'silent! cunmap <script>' dlm
   dlm = newDlm
   var d = escape(newDlm, '^$&.*/\~[]')
   escPat = '\\[\\' .. d .. ']'
@@ -35,13 +35,13 @@ def SetupImpl(newDlm: string)
   endif
   cnoremap <script> <expr> <Tab> <SID>Forward()
   cnoremap <script> <expr> <S-Tab> <SID>Back()
-  execute 'cnoremap <script> <expr> ' .. dlm .. ' <SID>Skip()'
+  execute 'cnoremap <script> <expr>' dlm '<SID>Skip()'
 enddef
 
 export def Unmap()
   silent! cunmap <script> <Tab>
   silent! cunmap <script> <S-Tab>
-  execute 'silent! cunmap <script> ' .. dlm
+  execute 'silent! cunmap <script>' dlm
   dlm = ''
 enddef
 
