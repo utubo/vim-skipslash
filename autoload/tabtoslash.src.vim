@@ -1,3 +1,6 @@
+let s:save_cpo = &cpo
+set cpo&vim
+
 let s:dlm = ''
 
 " get cmdline widhout escaped delmiters.
@@ -51,3 +54,4 @@ function! tabtoslash#setup() abort
   endif
 endfunction
 
+let &cpo = s:save_cpo

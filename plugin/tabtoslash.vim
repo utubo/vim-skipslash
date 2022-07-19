@@ -1,3 +1,6 @@
+let s:save_cpo = &cpo
+set cpo&vim
+
 if exists('g:tabtoslash')
   finish
 endif
@@ -14,3 +17,4 @@ augroup gotoslash
   endif
 augroup END
 
+let &cpo = s:save_cpo
