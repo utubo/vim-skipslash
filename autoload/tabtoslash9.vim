@@ -26,12 +26,12 @@ def SetupImpl(newDlm: string)
   execute 'silent! cunmap <script>' dlm
   dlm = newDlm
   var d = escape(newDlm, '^$&.*/\~[]')
-  escPat = '\\[\\' .. d .. ']'
+  escPat = $'\\[\\{d}]'
   # Some symbols need to be enclosed in [].
-  forwardPat = '[^' .. d .. ']*[' .. d .. ']'
-  backPat = '[' .. d .. '][^' .. d .. ']*$'
+  forwardPat = $'[^{d}]*[{d}]'
+  backPat = $'[{d}][^{d}]*$'
   if exists('g:tabtoslash_back_to_head')
-    backPat = '[^' .. d .. ']*' .. backPat
+    backPat = $'[^{d}]*{backPat}'
   endif
   cnoremap <script> <expr> <Tab> <SID>Forward()
   cnoremap <script> <expr> <S-Tab> <SID>Back()

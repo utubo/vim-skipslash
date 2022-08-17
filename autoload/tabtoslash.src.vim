@@ -24,12 +24,12 @@ function! s:setup(dlm) abort
   execute 'silent! cunmap <script>' s:dlm
   let s:dlm = a:dlm
   let l:d = escape(a:dlm, '^$&.*/\~[]')
-  let s:escPat = '\\[\\' . l:d . ']'
+  let s:escPat = $'\\[\\{l:d}]'
   " Some symbols need to be enclosed in [].
-  let s:forwardPat = '[^' . l:d . ']*[' . l:d . ']'
-  let s:backPat = '[' . l:d . '][^' . l:d . ']*$'
+  let s:forwardPat = $'[^{l:d}]*[{l:d}]'
+  let s:backPat = $'[{l:d}][^{l:d}]*$'
   if exists('g:tabtoslash_back_to_head')
-    let s:backPat = '[^' . l:d . ']*' . s:backPat
+    let s:backPat = $'[^{l:d}]*{s:backPat}'
   endif
   cnoremap <script> <expr> <Tab> <SID>forward()
   cnoremap <script> <expr> <S-Tab> <SID>back()

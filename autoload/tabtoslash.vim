@@ -17,11 +17,11 @@ fu! s:E(b) abort
 exe 'silent! cunmap <script>' s:b
 let s:b=a:b
 let l:d=escape(a:b,'^$&.*/\~[]')
-let s:c='\\[\\'.l:d.']'
-let s:d='[^'.l:d.']*['.l:d.']'
-let s:e='['.l:d.'][^'.l:d.']*$'
+let s:c=$'\\[\\{l:d}]'
+let s:d=$'[^{l:d}]*[{l:d}]'
+let s:e=$'[{l:d}][^{l:d}]*$'
 if exists('g:tabtoslash_back_to_head')
-let s:e='[^'.l:d.']*'.s:e
+let s:e=$'[^{l:d}]*{s:e}'
 endif
 cno <script> <expr> <Tab> <SID>B()
 cno <script> <expr> <S-Tab> <SID>C()
