@@ -14,7 +14,7 @@ fu! s:D() abort
 retu matchstr(s:A(),'.',getcmdpos()-1)==s:b ? "\<Right>" : s:b
 endf
 fu! s:E(b) abort
-exe 'silent! cunmap <script>' s:b
+call tabtoslash#unmap()
 let s:b=a:b
 let l:d=escape(a:b,'^$&.*/\~[]')
 let s:c=$'\\[\\{l:d}]'
@@ -23,7 +23,6 @@ let s:e=$'[{l:d}][^{l:d}]*$'
 if exists('g:tabtoslash_back_to_head')
 let s:e=$'[^{l:d}]*{s:e}'
 endif
-let s:f={ }
 for l:c in ['<Tab>','<S-Tab>',s:b]
 let s:f[l:c]=maparg(l:c,'c',0,1)
 endfo
@@ -40,6 +39,7 @@ else
 call mapset('c',0,l:b)
 endif
 endfo
+let s:f={ }
 let s:b=''
 endf
 fu! tabtoslash#setup() abort

@@ -24,9 +24,9 @@ def Skip(): string
 enddef
 
 def SetupImpl(newDlm: string)
-  execute 'silent! cunmap <script>' dlm
+  Unmap()
   dlm = newDlm
-  var d = escape(newDlm, '^$&.*/\~[]')
+  var d = escape(dlm, '^$&.*/\~[]')
   escPat = $'\\[\\{d}]'
   # Some symbols need to be enclosed in [].
   forwardPat = $'[^{d}]*[{d}]'
@@ -34,7 +34,6 @@ def SetupImpl(newDlm: string)
   if exists('g:tabtoslash_back_to_head')
     backPat = $'[^{d}]*{backPat}'
   endif
-  mapBackup = { }
   for key in ['<Tab>', '<S-Tab>', dlm]
     mapBackup[key] = maparg(key, 'c', 0, 1)
   endfor
@@ -52,6 +51,7 @@ export def Unmap()
       mapset(val)
     endif
   endfor
+  mapBackup = { }
   dlm = ''
 enddef
 

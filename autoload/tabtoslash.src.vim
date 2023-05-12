@@ -21,7 +21,7 @@ function! s:skip() abort
 endfunction
 
 function! s:setup(dlm) abort
-  execute 'silent! cunmap <script>' s:dlm
+  call tabtoslash#unmap()
   let s:dlm = a:dlm
   let l:d = escape(a:dlm, '^$&.*/\~[]')
   let s:escPat = $'\\[\\{l:d}]'
@@ -31,7 +31,6 @@ function! s:setup(dlm) abort
   if exists('g:tabtoslash_back_to_head')
     let s:backPat = $'[^{l:d}]*{s:backPat}'
   endif
-  let s:mapBackup = { }
   for l:key in ['<Tab>', '<S-Tab>', s:dlm]
     let s:mapBackup[l:key] = maparg(l:key, 'c', 0, 1)
   endfor
@@ -49,6 +48,7 @@ function! tabtoslash#unmap() abort
       call mapset('c', 0, l:val)
     endif
   endfor
+  let s:mapBackup = { }
   let s:dlm = ''
 endfunction
 
