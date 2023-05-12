@@ -44,7 +44,7 @@ function! tabtoslash#unmap() abort
 endfunction
 
 function! tabtoslash#setup() abort
-  let l:m = matchlist(getcmdline(), '^\S*\(s\|substitute\|[gv]!\?\)\([!#-/:-@^_`~{}\[\]]\).*\2')
+  let l:m = matchlist(getcmdline(), '^\S*\([sgv]\|substitute\|g!\)\([!#-/:-@^_`~{}\[\]]\).*\2')
   if len(l:m)
     if s:dlm != l:m[2]
       call s:setup(l:m[2])

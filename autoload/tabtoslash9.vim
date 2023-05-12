@@ -46,7 +46,7 @@ export def Unmap()
 enddef
 
 export def Setup()
-  var m = matchlist(getcmdline(), '^\S*\(s\|substitute\|[gv]!\?\)\([!#-/:-@^_`~{}\[\]]\).*\2')
+  var m = matchlist(getcmdline(), '^\S*\([sgv]\|substitute\|g!\)\([!#-/:-@^_`~{}\[\]]\).*\2')
   if len(m) !=# 0
     if dlm != m[2]
       SetupImpl(m[2])
