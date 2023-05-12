@@ -23,14 +23,23 @@ let s:e=$'[{l:d}][^{l:d}]*$'
 if exists('g:tabtoslash_back_to_head')
 let s:e=$'[^{l:d}]*{s:e}'
 endif
+let s:f={ }
+for l:c in ['<Tab>','<S-Tab>',s:b]
+let s:f[l:c]=maparg(l:c,'c',0,1)
+endfo
 cno <script> <expr> <Tab> <SID>B()
 cno <script> <expr> <S-Tab> <SID>C()
 exe 'cnoremap <script> <expr>' s:b '<SID>D()'
 endf
 fu! tabtoslash#unmap() abort
-sil! cu <script> <Tab>
-sil! cu <script> <S-Tab>
-exe 'silent! cunmap <script>' s:b
+for l:a in keys(s:f)
+let l:b=s:f[l:a]
+if empty(l:b)
+exe 'silent! cunmap' l:a
+else
+call mapset('c',0,l:b)
+endif
+endfo
 let s:b=''
 endf
 fu! tabtoslash#setup() abort

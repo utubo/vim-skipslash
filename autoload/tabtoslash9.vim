@@ -4,6 +4,7 @@ var dlm = ''
 var escPat = ''
 var forwardPat = ''
 var backPat = ''
+var mapBackup = { }
 
 # get cmdline widhout escaped delmiters.
 def Cl(): string
@@ -33,15 +34,24 @@ def SetupImpl(newDlm: string)
   if exists('g:tabtoslash_back_to_head')
     backPat = $'[^{d}]*{backPat}'
   endif
+  mapBackup = { }
+  for key in ['<Tab>', '<S-Tab>', dlm]
+    mapBackup[key] = maparg(key, 'c', 0, 1)
+  endfor
   cnoremap <script> <expr> <Tab> <SID>Forward()
   cnoremap <script> <expr> <S-Tab> <SID>Back()
   execute 'cnoremap <script> <expr>' dlm '<SID>Skip()'
 enddef
 
 export def Unmap()
-  silent! cunmap <script> <Tab>
-  silent! cunmap <script> <S-Tab>
-  execute 'silent! cunmap <script>' dlm
+  for key in keys(mapBackup)
+    const val = mapBackup[key]
+    if empty(val)
+      execute 'silent! cunmap' key
+    else
+      mapset(val)
+    endif
+  endfor
   dlm = ''
 enddef
 
@@ -52,7 +62,7 @@ export def Setup()
       SetupImpl(m[2])
     endif
   elseif dlm !=# ''
-    Unmap()
+    silent! Unmap()
   endif
 enddef
 

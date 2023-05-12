@@ -31,15 +31,24 @@ function! s:setup(dlm) abort
   if exists('g:tabtoslash_back_to_head')
     let s:backPat = $'[^{l:d}]*{s:backPat}'
   endif
+  let s:mapBackup = { }
+  for l:key in ['<Tab>', '<S-Tab>', s:dlm]
+    let s:mapBackup[l:key] = maparg(l:key, 'c', 0, 1)
+  endfor
   cnoremap <script> <expr> <Tab> <SID>forward()
   cnoremap <script> <expr> <S-Tab> <SID>back()
   execute 'cnoremap <script> <expr>' s:dlm '<SID>skip()'
 endfunction
 
 function! tabtoslash#unmap() abort
-  silent! cunmap <script> <Tab>
-  silent! cunmap <script> <S-Tab>
-  execute 'silent! cunmap <script>' s:dlm
+  for l:key in keys(s:mapBackup)
+    let l:val = s:mapBackup[l:key]
+    if empty(l:val)
+      execute 'silent! cunmap' l:key
+    else
+      call mapset('c', 0, l:val)
+    endif
+  endfor
   let s:dlm = ''
 endfunction
 
