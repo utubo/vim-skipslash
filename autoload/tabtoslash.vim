@@ -34,7 +34,7 @@ exe 'silent! cunmap <script>' s:b
 let s:b=''
 endf
 fu! tabtoslash#setup() abort
-let l:m=matchlist(getcmdline(),'^\S*\(s\|substitute\)\([!#-/:-@^_`~{}\[\]]\).*\2')
+let l:m=matchlist(getcmdline(),'^\S*\(s\|substitute\|[gv]!\?\)\([!#-/:-@^_`~{}\[\]]\).*\2')
 if len(l:m)
 if s:b !=l:m[2]
 call s:E(l:m[2])

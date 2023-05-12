@@ -2,7 +2,7 @@
 
 # vim-tabtoslash
 
-You can `<TAB>` to move to the next block when the command line is `:s/{pattern}/{string}/`,
+You can `<TAB>` to move to the next block when the command line is `:s/{pattern}/{string}/` or `:g/{pattern}/`,
 and automatically skips '/'.
 
 ## Install
