@@ -16,6 +16,7 @@ call dein#add('utubo/vim-tabtoslash')
 nnoremap gs :<C-u>s///cg<Left><Left><Left><Left>
 nnoremap gS :<C-u>%s/<C-r>=escape(expand('<cword>'), '^$.*?/\[]')<CR>//cg<Left><Left><Left>
 vnoremap gs :s///cg<Left><Left><Left><Left>
+let g:tabtoslash_autocomplete = 1
 ```
 
 ## Examples
@@ -31,7 +32,7 @@ vnoremap gs :s///cg<Left><Left><Left><Left>
 
 (Option)
 ```vim
-g:tabtoslash_back_to_head = 1
+let g:tabtoslash_back_to_head = 1
 ```
 
 `:s/pat/s|tr/` -> `:s/|pat/str/`
@@ -43,4 +44,22 @@ g:tabtoslash_back_to_head = 1
 ( When "/" is escaped with "\\" ...)
 
 `:s/pat\|/str/` -> `:s/pat\/|/str/`
+
+## Auto complete the slashes
+```vim
+let g:tabtoslash_autocomplete = 1
+```
+
+- `:s/` -> `:s///g`
+- `:g/` -> `:g//`
+- `:v/` -> `:v//`
+- `:g!/` -> `:g!//`
+
+## Supported delimiters
+- `/`, `#`, `-`, `:`, `-`, `@`, `^`, `_`, `~`
+
+This plugin works on e.g.
+```
+:s#foo#bar#
+```
 

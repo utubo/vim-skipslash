@@ -5,6 +5,7 @@ var escPat = ''
 var forwardPat = ''
 var backPat = ''
 var mapBackup = { }
+var clBackup = ''
 
 # get cmdline widhout escaped delmiters.
 def Cl(): string
@@ -55,14 +56,34 @@ export def Unmap()
   dlm = ''
 enddef
 
-export def Setup()
-  var m = matchlist(getcmdline(), '^\S*\([sgv]\|substitute\|g!\)\([!#-/:-@^_`~{}\[\]]\).*\2')
+def AutoComplete(cl: string, c: string, d: string)
+  if get(g:, 'tabtoslash_autocomplete', 0) ==# 0 ||
+      len(cl) !=# len(clBackup) + 1 ||
+      getcmdpos() !=# len(cl) + 1
+    return
+  elseif c ==# 's'
+    feedkeys($"{d}{d}g\<Left>\<Left>\<Left>", 'nit')
+  else
+    feedkeys($"{d}\<Left>", 'nit')
+  endif
+enddef
+
+def Setup()
+  const cl = getcmdline()
+  const m = matchlist(cl, '^\S*\([sgv]\|substitute\|g!\)\([/#-:-@^_`~]\)\(.*\2\)\?')
   if len(m) !=# 0
-    if dlm != m[2]
+    if m[3] ==# ''
+      AutoComplete(cl, m[1], m[2])
+    elseif dlm !=# m[2]
       SetupImpl(m[2])
     endif
   elseif dlm !=# ''
     silent! Unmap()
   endif
+  clBackup = cl
+enddef
+
+export def SetupOnSafeState()
+  autocmd SafeState * ++once Setup()
 enddef
 

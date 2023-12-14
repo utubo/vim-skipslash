@@ -2,6 +2,8 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let s:dlm = ''
+let s:clBackup = ''
+let s:mapBackup = {}
 
 " get cmdline widhout escaped delmiters.
 function! s:cl() abort
@@ -20,7 +22,7 @@ function! s:skip() abort
   return matchstr(s:cl(), '.', getcmdpos() - 1) == s:dlm ? "\<Right>" : s:dlm
 endfunction
 
-function! s:setup(dlm) abort
+function! s:setupImpl(dlm) abort
   call tabtoslash#unmap()
   let s:dlm = a:dlm
   let l:d = escape(a:dlm, '^$&.*/\~[]')
@@ -52,15 +54,36 @@ function! tabtoslash#unmap() abort
   let s:dlm = ''
 endfunction
 
-function! tabtoslash#setup() abort
-  let l:m = matchlist(getcmdline(), '^\S*\([sgv]\|substitute\|g!\)\([!#-/:-@^_`~{}\[\]]\).*\2')
+function! s:autoComplete(cl, c, d) abort
+  if get(g:, 'tabtoslash_autocomplete', 0) ==# 0 ||
+       \ len(a:cl) !=# len(s:clBackup) + 1 ||
+       \ getcmdpos() !=# len(a:cl) + 1
+    return
+  elseif a:c ==# 's'
+    call feedkeys($"{a:d}{a:d}g\<Left>\<Left>\<Left>", 'nit')
+  else
+    call feedkeys($"{a:d}\<Left>", 'nit')
+  endif
+endfunction
+
+function! s:setup() abort
+  const l:cl = getcmdline()
+  const l:m = matchlist(l:cl, '^\S*\([sgv]\|substitute\|g!\)\([/#-:-@^_`~]\)\(.*\2\)\?')
   if len(l:m)
-    if s:dlm != l:m[2]
-      call s:setup(l:m[2])
+  let g:a = l:m
+    if m[3] ==# ''
+      call s:autoComplete(l:cl, m[1], m[2])
+    elseif s:dlm !=# l:m[2]
+      call s:setupImpl(l:m[2])
     endif
-  elseif s:dlm != ''
+  elseif s:dlm !=# ''
     call tabtoslash#unmap()
   endif
+  let s:clBackup = cl
+endfunction
+
+function! tabtoslash#setupOnSafeState() abort
+  autocmd SafeState * ++once call s:setup()
 endfunction
 
 let &cpo = s:save_cpo
