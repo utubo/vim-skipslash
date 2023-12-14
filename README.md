@@ -1,4 +1,5 @@
-⚠This is the beta version.
+⚠This is the beta version.  
+⚠(2023/12/14) Rename plugin name from `vim-tabtoslash` to `vim-skipslash`
 
 # vim-skipslash
 
@@ -19,7 +20,7 @@ vnoremap gs :s///cg<Left><Left><Left><Left>
 let g:skipslash_autocomplete = 1
 ```
 
-## Examples
+## Usage
 
 `|` is the cursor.
 
