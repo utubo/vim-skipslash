@@ -32,7 +32,7 @@ def SetupImpl(newDlm: string)
   # Some symbols need to be enclosed in [].
   forwardPat = $'[^{d}]*[{d}]'
   backPat = $'[{d}][^{d}]*$'
-  if exists('g:tabtoslash_back_to_head')
+  if exists('g:skipslash_back_to_head')
     backPat = $'[^{d}]*{backPat}'
   endif
   for key in ['<Tab>', '<S-Tab>', dlm]
@@ -57,7 +57,7 @@ export def Unmap()
 enddef
 
 def AutoComplete(cl: string, c: string, d: string)
-  if get(g:, 'tabtoslash_autocomplete', 0) ==# 0 ||
+  if get(g:, 'skipslash_autocomplete', 0) ==# 0 ||
       len(cl) !=# len(clBackup) + 1 ||
       getcmdpos() !=# len(cl) + 1
     return

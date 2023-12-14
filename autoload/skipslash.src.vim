@@ -23,14 +23,14 @@ function! s:skip() abort
 endfunction
 
 function! s:setupImpl(dlm) abort
-  call tabtoslash#unmap()
+  call skipslash#unmap()
   let s:dlm = a:dlm
   let l:d = escape(a:dlm, '^$&.*/\~[]')
   let s:escPat = $'\\[\\{l:d}]'
   " Some symbols need to be enclosed in [].
   let s:forwardPat = $'[^{l:d}]*[{l:d}]'
   let s:backPat = $'[{l:d}][^{l:d}]*$'
-  if exists('g:tabtoslash_back_to_head')
+  if exists('g:skipslash_back_to_head')
     let s:backPat = $'[^{l:d}]*{s:backPat}'
   endif
   for l:key in ['<Tab>', '<S-Tab>', s:dlm]
@@ -41,7 +41,7 @@ function! s:setupImpl(dlm) abort
   execute 'cnoremap <script> <expr>' s:dlm '<SID>skip()'
 endfunction
 
-function! tabtoslash#unmap() abort
+function! skipslash#unmap() abort
   for l:key in keys(s:mapBackup)
     let l:val = s:mapBackup[l:key]
     if empty(l:val)
@@ -55,7 +55,7 @@ function! tabtoslash#unmap() abort
 endfunction
 
 function! s:autoComplete(cl, c, d) abort
-  if get(g:, 'tabtoslash_autocomplete', 0) ==# 0 ||
+  if get(g:, 'skipslash_autocomplete', 0) ==# 0 ||
        \ len(a:cl) !=# len(s:clBackup) + 1 ||
        \ getcmdpos() !=# len(a:cl) + 1
     return
@@ -77,12 +77,12 @@ function! s:setup() abort
       call s:setupImpl(l:m[2])
     endif
   elseif s:dlm !=# ''
-    call tabtoslash#unmap()
+    call skipslash#unmap()
   endif
   let s:clBackup = cl
 endfunction
 
-function! tabtoslash#setupOnSafeState() abort
+function! skipslash#setupOnSafeState() abort
   autocmd SafeState * ++once call s:setup()
 endfunction
 

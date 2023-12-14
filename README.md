@@ -1,6 +1,6 @@
 ⚠This is the beta version.
 
-# vim-tabtoslash
+# vim-skipslash
 
 You can `<TAB>` to move to the next block when the command line is `:s/{pattern}/{string}/` or `:g/{pattern}/`,
 and automatically skips '/'.
@@ -8,7 +8,7 @@ and automatically skips '/'.
 ## Install
 
 ```vim
-call dein#add('utubo/vim-tabtoslash')
+call dein#add('utubo/vim-skipslash')
 ```
 
 (Optional)
@@ -16,7 +16,7 @@ call dein#add('utubo/vim-tabtoslash')
 nnoremap gs :<C-u>s///cg<Left><Left><Left><Left>
 nnoremap gS :<C-u>%s/<C-r>=escape(expand('<cword>'), '^$.*?/\[]')<CR>//cg<Left><Left><Left>
 vnoremap gs :s///cg<Left><Left><Left><Left>
-let g:tabtoslash_autocomplete = 1
+let g:skipslash_autocomplete = 1
 ```
 
 ## Examples
@@ -32,7 +32,7 @@ let g:tabtoslash_autocomplete = 1
 
 (Option)
 ```vim
-let g:tabtoslash_back_to_head = 1
+let g:skipslash_back_to_head = 1
 ```
 
 `:s/pat/s|tr/` -> `:s/|pat/str/`
@@ -47,7 +47,7 @@ let g:tabtoslash_back_to_head = 1
 
 ## Auto complete the slashes
 ```vim
-let g:tabtoslash_autocomplete = 1
+let g:skipslash_autocomplete = 1
 ```
 
 - `:s/` -> `:s///g`

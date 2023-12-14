@@ -16,13 +16,13 @@ fu! s:D() abort
 retu matchstr(s:A(),'.',getcmdpos()-1)==s:b ? "\<Right>" : s:b
 endf
 fu! s:setupImpl(b) abort
-call tabtoslash#unmap()
+call skipslash#unmap()
 let s:b=a:b
 let l:d=escape(a:b,'^$&.*/\~[]')
 let s:e=$'\\[\\{l:d}]'
 let s:f=$'[^{l:d}]*[{l:d}]'
 let s:g=$'[{l:d}][^{l:d}]*$'
-if exists('g:tabtoslash_back_to_head')
+if exists('g:skipslash_back_to_head')
 let s:g=$'[^{l:d}]*{s:g}'
 endif
 for l:c in ['<Tab>','<S-Tab>',s:b]
@@ -32,7 +32,7 @@ cno <script> <expr> <Tab> <SID>B()
 cno <script> <expr> <S-Tab> <SID>C()
 exe 'cnoremap <script> <expr>' s:b '<SID>D()'
 endf
-fu! tabtoslash#unmap() abort
+fu! skipslash#unmap() abort
 for l:a in keys(s:d)
 let l:b=s:d[l:a]
 if empty(l:b)
@@ -45,7 +45,7 @@ let s:d={ }
 let s:b=''
 endf
 fu! s:F(b,c,d) abort
-if get(g:,'tabtoslash_autocomplete',0)==# 0 || len(a:b) !=# len(s:c)+1 || getcmdpos() !=# len(a:b)+1
+if get(g:,'skipslash_autocomplete',0)==# 0 || len(a:b) !=# len(s:c)+1 || getcmdpos() !=# len(a:b)+1
 retu
 elseif a:c==# 's'
 call feedkeys($"{a:d}{a:d}g\<Left>\<Left>\<Left>",'nit')
@@ -64,11 +64,11 @@ elseif s:b !=# l:m[2]
 call s:setupImpl(l:m[2])
 endif
 elseif s:b !=# ''
-call tabtoslash#unmap()
+call skipslash#unmap()
 endif
 let s:c=b
 endf
-fu! tabtoslash#setupOnSafeState() abort
+fu! skipslash#setupOnSafeState() abort
 au SafeState * ++once call s:G()
 endf
 let &cpo=s:a
