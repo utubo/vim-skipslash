@@ -64,3 +64,6 @@ This plugin works on e.g.
 :s#foo#bar#
 ```
 
+## Build
+`autoload/skipslash.vim` is minified from `autoload/skipslash.src.vim`
+with [vim-minviml](https://github.com/utubo/vim-minviml).
