@@ -6,7 +6,7 @@ if exists('g:skipslash')
 endif
 let g:skipslash = 1
 
-augroup gotoslash
+augroup skipslash
   autocmd!
   if has('vim9script')
     autocmd CmdlineChanged : silent! call skipslash9#SetupOnSafeState()
